@@ -1,0 +1,132 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Todo List</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="#">Project</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Todo List</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom spacing5">
+                                <thead>
+                                    <tr>
+                                        <th><a href="javascript:void(0);" data-toggle="modal" data-target="#addtodomodal" class="btn btn-info btn-sm">Add New</a></th>
+                                        <th class="w60 text-right">Due</th>
+                                        <th class="w100">Priority</th>
+                                        <th class="w60"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (todo of todos) { %>
+                                        <tr>
+                                            <td>
+                                                <label class="fancy-checkbox">
+                                                    <input type="checkbox" class="todo-check" data-id="<%= todo._id %>" <%= todo.checked ? "checked" : "" %>>
+                                                    <span><%= todo.title %></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-right"><%= todo.due.toDateString() %></td>
+                                            <td><span class="badge badge-<%= todo.priority == 'high' ? 'danger' : todo.priority == 'med' ? 'warning' : '' %> ml-0 mr-0"><%= todo.priority %></span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-delete-todo btn-sm" data-name="<%= todo.title %>" data-id="<%= todo._id %>"><i class="fa fa-trash-o"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="modal fade" id="addtodomodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Todo</h4>
+            </div>
+            <form class="modal-body" id="add-client-form" action="/project/todolist/add" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="add-todo-title" placeholder="Title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="priority" required class="form-control round" id="add-todo-priority">
+                            <% for(const priority of PRIORITYLIST_TODO) { %>
+                                <option value="<%= priority %>"><%= priority %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" name="due" class="form-control round" id="add-todo-due" placeholder="Due">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+
+<script>
+    var todos = document.querySelectorAll(".todo-check")
+    for (var i =0; i<todos.length; i++){
+        todos[i].addEventListener("click", function(e){
+            var el = e.target;
+            var checked = el.checked;
+            var id = $(el).data("id");
+    
+            $.ajax({
+                url: `/project/todolist/updateCheck/${id}`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify({checked}),
+                success: function(data){
+                    if (data.error){
+                        toastErr(data.error);
+                    }
+                    toastSuccess(`${checked ? "Checked" : "Unchecked"} Successfully`);
+                },
+                error: function(err){
+                    console.log(err);
+                    toastErr(err);
+                }
+            })
+        })
+    }
+
+    $(".btn-delete-todo").click(function(){
+        console.log("delete project")
+        var $id = $(this).data("id");
+        var $name = $(this).data("name");
+        deleteFromBackend($id, $name, "/project/todolist/");
+    })
+</script>

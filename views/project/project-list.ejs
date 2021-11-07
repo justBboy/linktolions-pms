@@ -1,0 +1,262 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Project List</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="#">Project</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">List</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <form class="row" action="/project/projectlist/search" method="POST">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="input-group">
+                                        <input name="owner" type="text" class="form-control" placeholder="Owner">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="input-group">
+                                        <select name="status" id="status-search-project" class="form-control round">
+                                            <option value="">Status</option>
+                                            <% for (const item of STATUSLIST) { %>
+                                                <option value="<%= item %>"><%= item %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <select name="priority" class="form-control round">
+                                        <option value="">Priority</option>
+                                        <% for (const item of PRIORITYLIST) { %>
+                                            <option value="<%= item %>"><%= item %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <button type="submit" class="btn btn-sm btn-primary btn-block" title="">Search</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="col-md-12 col-sm-12 text-right hidden-xs">
+                        <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-round" data-toggle="modal" data-target="#addprojectmodal" title="">Add New</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-custom spacing8">
+                            <thead>
+                                <tr>
+                                    <th>Owner</th>
+                                    <th>Milestone</th>                                    
+                                    <th>Status</th>
+                                    <th class="w100">Work</th>
+                                    <th class="w100">Duration</th>
+                                    <th>Priority</th>
+                                    <th class="w200">Task</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(project of projects) { %>
+                                    <tr>
+                                        <td><img src="/static/assets/images/xs/avatar1.jpg" alt="Avatar" class="w30 rounded-circle mr-2"> <span class="project-owner"><%= project.owner %></span></td>
+                                        <td><h6 class="mb-0 project-milestone"><%= project.milestone %></h6></td>
+                                        <td><span class="badge project-status <%= project.status == 'issue-level-1' ? 'badge-danger' : '' %> <%= project.status == 'issue-level-2' ? 'badge-warning' : '' %>"><%= project.status %></span></td>
+                                        <td><span class="project-work"><%= project.work %></span></td>
+                                        <td class="project-duration"><%= project.duration %> hrs</td>
+                                        <td><span class="project-priority <%= project.priority == 'medium' ? 'text-warning' : '' %> <%= project.priority == 'high' ? 'text-danger' : '' %>"><%= project.priority %></span></td>
+                                        <td>
+                                            <div class="progress progress-xxs progress-transparent custom-color-green mb-0 mt-0">
+                                                <div id="project-progress" class="progress-bar" data-transitiongoal="<%= project.progress %>" aria-valuenow="<%= project.progress %>" style="width: 0%;"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-delete-project btn-sm" data-name="<%= project.owner %>" data-id="<%= project._id %>">Delete</button>
+                                            <button type="button" class="btn btn-warning btn-update-project btn-sm" data-id="<%= project._id %>">Update</button>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="modal fade" id="addprojectmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Project</h4>
+            </div>
+            <form class="modal-body" id="add-project-form" action="/project/projectlist/add" method="POST">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="owner" required class="form-control round" id="add-task-title" placeholder="Owner">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="milestone" required class="form-control round" id="add-task-date" placeholder="Milestone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="status" class="form-control round">
+                            <option value="open">Open</option>
+                            <option value="issue-level-1">Issue Level 1</option>
+                            <option value="issue-level-2">Issue Level 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="number" name="work" placeholder="Work" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="number" name="duration" placeholder="Duration" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="priority" class="form-control round">
+                            <option value="none">None</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateprojectmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update Project</h4>
+            </div>
+            <form class="modal-body" id="update-project-form" action="/project/projectlist/update" method="POST">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="owner" required class="form-control round" id="update-project-owner" placeholder="Owner">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="milestone" required class="form-control round" id="update-project-milestone" placeholder="Milestone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="status" id="update-project-status" class="form-control round">
+                            <option value="open">Open</option>
+                            <option value="issue-level-1">Issue Level 1</option>
+                            <option value="issue-level-2">Issue Level 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="number" id="update-project-work" name="work" placeholder="Work" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="number" name="duration" id="update-project-duration" placeholder="Duration" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="priority" id="update-project-priority" class="form-control round">
+                            <option value="none">None</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="update-project-btn" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+<script>
+$(".btn-delete-project").click(function(){
+    console.log("delete project")
+        var $id = $(this).data("id");
+        var $name = $(this).data("name");
+        deleteFromBackend($id, $name, "/project/projectlist/");
+    })
+
+    var updateId = "";
+
+$(".btn-update-project").click(function(){
+    var parent = $(this).parent().parent();
+    var $id = $(this).data("id");
+    var owner = parent.find(".project-owner").text();
+    var milestone = parent.find(".project-milestone").text();
+    var status = parent.find(".project-status").text();
+    var work = parent.find(".project-work").text();
+    var duration = parent.find(".project-duration").text().replace("hrs", "").trim();
+    var priority = parent.find(".project-priority").text();
+
+    console.log(owner, milestone)
+    updateId = $id;
+
+    $("#update-project-owner").val(owner);
+    $("#update-project-milestone").val(milestone);
+    $("#update-project-status").val(status);
+    $("#update-project-work").val(work);
+    $("#update-project-duration").val(duration);
+    $("#update-project-priority").val(priority);
+
+    $("#updateprojectmodal").modal("toggle");
+})
+
+$("#update-project-btn").click(function(){
+        var owner = document.getElementById("update-project-owner").value;
+        var milestone = document.getElementById("update-project-milestone").value;
+        var status = document.getElementById("update-project-status").value;
+        var work = document.getElementById("update-project-work").value;
+        var duration = document.getElementById("update-project-duration").value;
+        var priority = document.getElementById("update-project-priority").value;
+        var form = document.getElementById("update-project-form");
+        
+        if(!form.checkValidity()) return form.reportValidity();
+
+        var data = {owner, milestone, status, work, duration, priority};
+
+        updateToBackend(updateId, data, "/project/projectlist/", "owner")
+})
+
+</script>

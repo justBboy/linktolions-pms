@@ -1,0 +1,69 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>New Post</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="page-blog.html">Blog</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Post</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="file" name="image" id="add-blog-image" class="dropify">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="title" class="form-control" placeholder="Title">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="category" class="form-control" placeholder="Category">
+                            </div>
+
+                            <textarea hidden name="body" id="add-blog-body"></textarea>
+
+                            <div class="summernote">
+                                Hi there,
+                                <br/><br/>
+                                <p>The toolbar can be customized and it also supports various callbacks such as <code>oninit</code>, <code>onfocus</code>, <code>onpaste</code> and many more.</p>
+                                <p><strong>Note:</strong> The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English</p>                                
+                                <br/><br/>
+                                <p>Thank you!</p>
+                                <h6>Summer Note</h6>
+                            </div>
+                            <div class="align-right mt-3">
+                                <button class="btn btn-link"><i class="icon-paper-clip text-muted"></i></button>
+                                <button class="btn btn-link"><i class="icon-camera text-muted"></i></button>
+                                <button class="btn btn-link"><i class="icon-pointer text-muted"></i></button>
+                                <button class="btn btn-primary">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/vendor/summernote/dist/summernote.js"></script>
+<script src="/static/assets/vendor/dropify/js/dropify.min.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+
+<script>
+    $(".dropify").dropify();
+</script>

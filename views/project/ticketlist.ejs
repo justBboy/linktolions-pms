@@ -1,0 +1,264 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Ticket List</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="#">Project</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Ticket</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>            
+            <div class="row clearfix">
+                <div class="col-12">
+                    
+                    <div class="card">
+                        <div class="body">
+                            <form action="/project/ticketlist/search" method="POST" class="row">
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="id" class="form-control" placeholder="id">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <select name="priority" class="form-control round">
+                                            <option value="">None</option>
+                                            <% for (priority of PRIORITYLIST_TICKETS) { %>
+                                                <option value="<%= priority %>"><%= priority %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <select name="department" class="form-control round">
+                                            <option value="">None</option>
+                                            <% for (department of DEPARTMENTS) { %>
+                                                <option value="<%= department %>"><%= department %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="agent" placeholder="Agent">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <input type="date" name="date" class="form-control" placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <button type="submit" class="btn btn-sm btn-primary btn-block" title="">Search</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <div class="col-md-12 col-sm-12 text-right hidden-xs mb-2">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-round" data-toggle="modal" data-target="#addticketmodal" title="">Add New</a>
+                        </div>
+                        <table class="table table-custom2 table-hover">
+                            <thead>
+                                <tr>
+                                    <th colspan="5">Ticket Detail</th>
+                                    <th colspan="3">Activity</th>
+                                </tr>
+                                <tr>
+                                    <th class="w30">&nbsp;</th>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Priority</th>
+                                    <th>Department</th>
+                                    <th>Agent</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (ticket of tickets) { %>
+                                    <tr>
+                                        <td>
+                                            <label class="fancy-checkbox margin-0">
+                                                <input type="checkbox" name="checkbox" class="checkbox-tick">
+                                                <span></span>
+                                            </label>
+                                        </td>
+                                        <td><a href="#"><%= ticket.id %></a></td>
+                                        <td><span class="ticket-title"><%= ticket.title %></span></td>
+                                        <td><span class="badge ticket-priority <%= ticket.priority == 'lower' ? 'badge-default' : ticket.priority == 'medium' ? 'badge-warning' : ticket.priority == 'high' ? 'badge-danger' : '' %>"><%= ticket.priority %></span></td>
+                                        <td><span class="ticket-department"><%= ticket.department %></span></td>
+                                        <td><span class="ticket-agent"><%= ticket.agent %></span></td>
+                                        <td><span class="ticket-date"><%= ticket.date.toDateString() %></span></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-delete-ticket btn-sm" data-name="<%= ticket.title %>" data-id="<%= ticket._id %>">Delete</button>
+                                            <button type="button" class="btn btn-warning btn-update-ticket btn-sm" data-id="<%= ticket._id %>">Update</button>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="modal fade" id="addticketmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Ticket</h4>
+            </div>
+            <form class="modal-body" id="add-project-form" action="/project/ticketlist/add" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="add-ticket-title" placeholder="Owner">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="priority" required class="form-control round" id="add-ticket-priority">
+                            <% for (priority of PRIORITYLIST_TICKETS) { %>
+                                <option value="<%= priority %>"><%= priority %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="department" required class="form-control round" id="add-ticket-department">
+                            <% for (department of DEPARTMENTS) { %>
+                                <option value="<%= department %>"><%= department %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="agent" placeholder="Agent" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" name="date" placeholder="Date" required class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateticketmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update Ticket</h4>
+            </div>
+            <form class="modal-body" id="update-ticket-form" action="/project/ticketlist/update" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="update-ticket-title" placeholder="Owner">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="priority" required class="form-control round" id="update-ticket-priority">
+                            <% for (priority of PRIORITYLIST_TICKETS) { %>
+                                <option value="<%= priority %>"><%= priority %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="department" required class="form-control round" id="update-ticket-department">
+                            <% for (department of DEPARTMENTS) { %>
+                                <option value="<%= department %>"><%= department %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="agent" placeholder="Agent" required id="update-ticket-agent" class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" name="date" placeholder="Date" required id="update-ticket-date" class="form-control round" /> 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="update-ticket-btn" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+
+<script>
+$(".btn-delete-ticket").click(function(){
+    console.log("delete project")
+        var $id = $(this).data("id");
+        var $name = $(this).data("name");
+        deleteFromBackend($id, $name, "/project/ticketlist/");
+    })
+
+    var updateId = "";
+$(".btn-update-ticket").click(function(){
+    var parent = $(this).parent().parent();
+    var $id = $(this).data("id");
+    var title = parent.find(".ticket-title").text();
+    var priority = parent.find(".ticket-priority").text();
+    var department = parent.find(".ticket-department").text();
+    var agent = parent.find(".ticket-agent").text();
+    var date = new Date(parent.find(".ticket-date").text())
+
+    updateId = $id;
+
+    $("#update-ticket-title").val(title);
+    $("#update-ticket-priority").val(priority);
+    $("#update-ticket-department").val(department);
+    $("#update-ticket-agent").val(agent);
+    document.getElementById("update-ticket-date").valueAsDate = date;
+
+    $("#updateticketmodal").modal("toggle");
+})
+
+$("#update-ticket-btn").click(function(){
+        var title = $("#update-ticket-title").val();
+        var priority = $("#update-ticket-priority").val();
+        var department = $("#update-ticket-department").val();
+        var agent = $("#update-ticket-agent").val();
+        var date = document.getElementById("update-ticket-date").valueAsDate
+        var form = document.getElementById("update-ticket-form");
+        
+        if(!form.checkValidity()) return form.reportValidity();
+
+        var data = {title, priority, department, agent, date};
+
+        updateToBackend(updateId, data, "/project/ticketlist/", "title")
+})
+</script>

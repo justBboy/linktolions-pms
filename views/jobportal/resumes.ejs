@@ -1,0 +1,131 @@
+<%- include("../partials/jobportal-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h1>Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../html/index.html">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">Job</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Resumes</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <label>Search</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <label>Hourly Rate</label>
+                                    <div class="multiselect_div">
+                                        <select id="multiselect3-all" name="multiselect3[]" class="multiselect multiselect-custom" multiple="multiple">
+                                            <option value="multiselect-all">All rates</option>
+                                            <option value="1">$0 - $50</option>
+                                            <option value="2">$50 - $100</option>
+                                            <option value="3">$100 - $200</option>
+                                            <option value="4">$200 - $500</option>
+                                            <option value="5">$500 +</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>Academic Degree</label>
+                                    <div class="form-group">
+                                        <select class="custom-select">
+                                            <option selected="">All degrees</option>
+                                            <option value="1">Associate degree</option>
+                                            <option value="2">Bachelor's degree</option>
+                                            <option value="3">Master's degree</option>
+                                            <option value="4">Doctoral degree</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>Order</label>
+                                    <div class="form-group">
+                                        <select class="custom-select">
+                                            <option selected="">Relevance</option>
+                                            <option value="1">Highest rate first</option>
+                                            <option value="2">Lowest rate first</option>
+                                            <option value="3">Highest degree first</option>
+                                            <option value="4">Lowest degree first</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>&nbsp;</label>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-block" title="">Filter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <% for (const resume of resumes) { %>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card c_grid c_yellow">
+                            <div class="body text-center p-4">
+                                <div class="circle">
+                                    <img class="rounded-circle" src="/static/assets/images/sm/avatar1.jpg" alt="">
+                                </div>
+                                <h6 class="mt-3 mb-0"><%= resume.name %></h6>
+                                <span><%= resume.email %></span>
+                                <ul class="mt-3 mb-4 list-unstyled d-flex justify-content-center">
+                                    <% for (const skill of resume.skills) { %>
+                                        <li><a class="p-3" href="#"><%= skill %></a></li>
+                                    <% } %>
+                                </ul>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <div><i class="fa fa-dollar"></i> <span><%= resume.payment %></span> / hour</div>
+                                    <div><i class="fa fa-map-marker"></i> <span><%= resume.location %></span></div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                <% } %>
+                <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <% if(lastPageNumber > 1) { %>
+                                <li class="page-item">
+                                <a class="page-link" href="/jobportal/resumes?page=<%= pageNumber-1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <li class="page-item <%= pageNumber == 1 ? 'active' : '' %>"><a class="page-link" href="/jobportal/resumes?page=1">1</a></li>
+                                <li class="page-item <%= pageNumber == 2 ? 'active' : '' %>"><a class="page-link" href="/jobportal/resumes?page=2">2</a></li>
+                                <% for(var i =pageNumber; i<pageNumber+4; i++) { %>
+                                    <% if(i < lastPageNumber && i > 2) { %>
+                                        <li class="page-item <%= pageNumber == i ? 'active' : '' %>"><a class="page-link" href="/jobpoartal/resumes?page=<%= i %>"><%= i %></a></li>
+                                    <% } %>
+                                <% } %>
+                                <li class="page-item <%= pageNumber == lastPageNumber ? 'active' : '' %>"><a class="page-link" href="/jobpoartal/resumes?page=<%= lastPageNumber %>"><%= lastPageNumber %></a></li>
+                                <% if (pageNumber < lastPageNumber) { %>
+                                    <a class="page-link" href="/jobpoartal/resumes?page=<%= pageNumber+1 %>" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                <% } %>
+                                </li>
+                            <% } %>
+                        </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+</div>

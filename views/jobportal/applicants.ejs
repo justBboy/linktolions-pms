@@ -1,0 +1,115 @@
+<%- include("../partials/jobportal-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h1>Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../html/index.html">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">Job</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Applicants</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-6">
+                                    <label>Search</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <label>Status</label>
+                                    <div class="multiselect_div">
+                                        <select id="multiselect3-all" name="multiselect3[]" class="multiselect multiselect-custom" multiple="multiple">
+                                            <option value="multiselect-all">STATUS</option>
+                                            <option value="All Statuses">All Statuses</option>
+                                            <option value="New">New</option>
+                                            <option value="Contacted">Contacted</option>
+                                            <option value="Interviewed">Interviewed</option>
+                                            <option value="Hired">Hired</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <label>Order</label>
+                                    <div class="form-group">
+                                        <select class="custom-select">
+                                            <option selected="">Newest first</option>
+                                            <option value="1">Oldest first</option>
+                                            <option value="2">Low salary first</option>
+                                            <option value="3">High salary first</option>
+                                            <option value="3">Sort by name</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>&nbsp;</label>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-block" title="">Filter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover js-basic-example dataTable table-custom spacing5 mb-0">
+                            <tbody>
+                                <% for (const applicant of applicants) { %>
+                                    <% const typeColor = applicant.position.type === positionTypes.FULL_TIME ? "success" : applicant.position.type === positionTypes.PART_TIME ? "warning" : applicant.position.type === positionTypes.INTERNSHIP ? "info" : applicant.position.type === positionTypes.FREELANCE ? "primary" : applicant.position.type === positionTypes.REMOTE ? "" : "" %>
+                                    <tr>
+                                       <td class="w60">
+                                            <div class="avtar-pic w35 bg-<%= colors[Math.floor(Math.random() * colors.length)] %>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Avatar Name">
+                                                <span><%= position.title.substr(0, 2) %></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div title="<%= applicant.position.title %>" class="font-15"><%= applicant.position.title %></div>
+                                            <span title="<%= applicant.position.category %>" class="text-muted"><%= applicant.position.category %></span>
+                                        </td>
+                                        <td>$<span><%= applicant.payment %></span> per hour</td>
+                                        <td><span class="badge badge-<%= typeColor %> text-uppercase"><%= applicant.position.type %></span></td>
+                                        <td class="text-right">Applied on: <strong><%= (new Date(applicant.created_at)).toDateString() %></strong></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul class="pagination mt-2">
+                        <% if(lastPageNumber > 1) { %>
+                                <li class="page-item">
+                                <a class="page-link" href="/contact?page=<%= pageNumber-1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <li class="page-item <%= pageNumber == 1 ? 'active' : '' %>"><a class="page-link" href="/contact?page=1">1</a></li>
+                                <li class="page-item <%= pageNumber == 2 ? 'active' : '' %>"><a class="page-link" href="/contact?page=2">2</a></li>
+                                <% for(var i =pageNumber; i<pageNumber+4; i++) { %>
+                                    <% if(i < lastPageNumber && i > 2) { %>
+                                        <li class="page-item <%= pageNumber == i ? 'active' : '' %>"><a class="page-link" href="/contact?page=<%= i %>"><%= i %></a></li>
+                                    <% } %>
+                                <% } %>
+                                <li class="page-item <%= pageNumber == lastPageNumber ? 'active' : '' %>"><a class="page-link" href="/contact?page=<%= lastPageNumber %>"><%= lastPageNumber %></a></li>
+                                <% if (pageNumber < lastPageNumber) { %>
+                                    <a class="page-link" href="/contact?page=<%= pageNumber+1 %>" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                <% } %>
+                                </li>
+                            <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

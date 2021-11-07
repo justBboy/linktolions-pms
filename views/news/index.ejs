@@ -1,0 +1,210 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>News</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">News</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                    <div class="col-md-6 col-sm-12 text-right hidden-xs">
+                        <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-round" data-toggle="modal" data-target="#addnewsmodal" title="">Add New</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                        <% for(let i=1; i<=news_array.length+1; i++) { %>
+                            <% if(i % 4 === 0 || i === 1) { %>
+                                <div class="card-group m-b-30">
+                            <% } %>
+                             <% if (i === news_array.length+1 || (i % 4 === 1 && i > 4) || i===5) { %>
+                                </div>
+                             <% } %>
+                            <% if (i <= news_array.length) { %>
+                                <div class="card n_category">
+                                    <span class="sub_n_category bg-green"><%= news_array[i-1].category %></span>
+                                    <div class="action text-right" data-description="<%= news_array[i-1].description %>" data-title="<%= news_array[i-1].title %>" data-id="<%= news_array[i-1]._id %>">
+                                        <a class="news-edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                        <a class="news-delete-btn" href="#"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                    <img class="card-img-top news-image" src="<%= news_array[i-1].image.path %>" alt="Card image cap">
+                                    <div class="body">
+                                        <h5 class="card-title news-title"><a href="javascript:void(0);"><%= news_array[i-1].title %></a></h5>
+                                        <p class="card-text news-body"><%= news_array[i-1].body %></p>
+                                        <p class="card-text"><small class="text-muted"><%= news_array[i-1].created_at.toDateString() %></small></p>
+                                    </div>
+                                </div>
+                                <div class="card n_category">
+                                    <span class="sub_n_category bg-green"><%= news_array[i-1].category %></span>
+                                    <img class="card-img-top" src="<%= news_array[i-1].image.path %>" alt="Card image cap">
+                                    <div class="body">
+                                        <h5 class="card-title"><a href="javascript:void(0);"><%= news_array[i-1].title %></a></h5>
+                                        <p class="card-text"><%= news_array[i-1].body %></p>
+                                        <p class="card-text"><small class="text-muted"><%= news_array[i-1].created_at.toDateString() %></small></p>
+                                    </div>
+                                </div>
+                                <div class="card n_category">
+                                    <span class="sub_n_category bg-green"><%= news_array[i-1].category %></span>
+                                    <img class="card-img-top" src="<%= news_array[i-1].image.path %>" alt="Card image cap">
+                                    <div class="body">
+                                        <h5 class="card-title"><a href="javascript:void(0);"><%= news_array[i-1].title %></a></h5>
+                                        <p class="card-text"><%= news_array[i-1].body %></p>
+                                        <p class="card-text"><small class="text-muted"><%= news_array[i-1].created_at.toDateString() %></small></p>
+                                    </div>
+                                </div>
+                                <div class="card n_category">
+                                    <span class="sub_n_category bg-green"><%= news_array[i-1].category %></span>
+                                    <img class="card-img-top" src="<%= news_array[i-1].image.path %>" alt="Card image cap">
+                                    <div class="body">
+                                        <h5 class="card-title"><a href="javascript:void(0);"><%= news_array[i-1].title %></a></h5>
+                                        <p class="card-text"><%= news_array[i-1].body %></p>
+                                        <p class="card-text"><small class="text-muted"><%= news_array[i-1].created_at.toDateString() %></small></p>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } %>
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <% if(lastPageNumber > 1) { %>
+                                <li class="page-item">
+                                <a class="page-link" href="/news?page=<%= pageNumber-1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <li class="page-item <%= pageNumber == 1 ? 'active' : '' %>"><a class="page-link" href="/news?page=1">1</a></li>
+                                <li class="page-item <%= pageNumber == 2 ? 'active' : '' %>"><a class="page-link" href="/news?page=2">2</a></li>
+                                <% for(var i =pageNumber; i<pageNumber+4; i++) { %>
+                                    <% if(i < lastPageNumber && i > 2) { %>
+                                        <li class="page-item <%= pageNumber == i ? 'active' : '' %>"><a class="page-link" href="/news?page=<%= i %>"><%= i %></a></li>
+                                    <% } %>
+                                <% } %>
+                                <li class="page-item <%= pageNumber == lastPageNumber ? 'active' : '' %>"><a class="page-link" href="/news?page=<%= lastPageNumber %>"><%= lastPageNumber %></a></li>
+                                <% if (pageNumber < lastPageNumber) { %>
+                                    <a class="page-link" href="/news?page=<%= pageNumber+1 %>" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                <% } %>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="addnewsmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add News</h4>
+            </div>
+            <form class="modal-body" id="add-news-form" enctype="multipart/form-data" action="/news/add/" method="POST">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="file" name="image" class="dropify">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="add-news-title" placeholder="title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea class="form-control round" name="body" placeholder="description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="category" required class="form-control round" id="add-news-description" placeholder="category">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updatenewsmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update News</h4>
+            </div>
+            <form class="modal-body" id="update-news-form" enctype="multipart/form-data" action="/news/update/" method="POST">
+                <input type="hidden" id="update-news-id" name="id" />
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="file" name="image" id="update-news-image" class="dropify">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="update-news-title" placeholder="title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea class="form-control round" name="body" id="update-news-body" placeholder="description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="category" required class="form-control round" id="update-news-description" placeholder="category">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/dropify/js/dropify.min.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+
+<script>
+    $('.dropify').dropify();
+    $(".news-delete-btn").click(function(){
+        var $id = $(this).parent().data("id");
+        var $name = $(this).parent().data("title");
+        deleteFromBackend($id, $name, "/news/");
+    })
+
+    $(".news-update-btn").click(function(){
+        var $action = $(this).parent()
+        var $parent = $action.parent();        
+        var id = $action.data("id");
+        var title = $parent.find("news-title").text();
+        var body = $parent.find('news-body').text();
+        var category = $parent.find('news-category').text();
+        var image = $parent.find("news-image").attr("src");
+
+        $("#update-news-id").val(id);
+
+        $("#update-news-image").val(image);
+        $("#update-news-title").val(title);
+        $("#update-news-body").val(body);
+        $("#update-news-category").val(category)
+
+        $("#updatenewsmodal").modal("toggle");
+    })
+</script>

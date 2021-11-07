@@ -1,0 +1,400 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Taskboard</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="#">Project</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Taskboard</li> </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="body taskboard b-cyan planned_task">
+                            <h6 class="font300 mb-3 task-count">Planned <span class="float-right"><%= plannedTasks.length %></span></h6>                            
+                            <div class="dd" data-plugin="nestable">
+                                <ol class="dd-list" id="planned-tasks" data-category="planned">
+                                    <% for(var task of plannedTasks) { %>
+                                        <li class="dd-item" id="<%= task._id %>" data-category="<%= task.category %>" data-id="<%= task._id %>">
+                                            <div class="dd-handle d-flex justify-content-between align-items-center">
+                                                <div><%= task.title %></div>
+                                                <div class="action" data-description="<%= task.description %>" data-date="<%= task.date %>" data-title="<%= task.title %>" data-id="<%= task._id %>">
+                                                     <a class="task-edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                                    <a class="task-delete-btn" href="#"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="dd-content p-15">
+                                                <p><%= task.description %></p>
+                                                <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                                                    <li class="mr-2 flex-grow-1 bd-highlight"><span class="badge badge-default"><i class="fa fa-clock-o"></i> 18 Jan</span></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-comments"></i> 5</a></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-check-square"></i> 11</a></li>
+                                                    <li class="ml-3 bd-highlight">
+                                                        <ul class="list-unstyled sm team-info margin-0">
+                                                            <li><img src="/static/assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                                            <li><img src="/static/assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                </ol>
+                            </div>
+                            <button data-category="planned" class="btn btn-task-add btn-primary btn-block" type="button">ADD NEW</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="body taskboard b-orange progress_task">
+                            <h6 class="font300 mb-3 task-count">In progress <span class="float-right"><%= inprogressTasks.length %></span></h6>
+                            <div class="dd" data-plugin="nestable">
+                                <ol class="dd-list" id="inprogress-tasks" data-category="in-progress">
+                                    <% for(var task of inprogressTasks) { %>
+                                        <li class="dd-item" id="<%= task._id %>" data-category="<%= task.category %>" data-id="<%= task._id %>">
+                                            <div class="dd-handle d-flex justify-content-between align-items-center">
+                                                <div><%= task.title %></div>
+                                                <div class="action" data-description="<%= task.description %>" data-date="<%= task.date %>" data-title="<%= task.title %>" data-id="<%= task._id %>">
+                                                     <a class="task-edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                                    <a class="task-delete-btn" href="#"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="dd-content p-15">
+                                                <p><%= task.description %></p>
+                                                <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                                                    <li class="mr-2 flex-grow-1 bd-highlight"><span class="badge badge-default"><i class="fa fa-clock-o"></i> 18 Jan</span></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-comments"></i> 5</a></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-check-square"></i> 11</a></li>
+                                                    <li class="ml-3 bd-highlight">
+                                                        <ul class="list-unstyled sm team-info margin-0">
+                                                            <li><img src="/static/assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                                            <li><img src="/static/assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                </ol>
+                            </div>
+                            <button data-category="in-progress" class="btn btn-task-add btn-primary btn-block" type="button">ADD NEW</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="body taskboard b-green completed_task">
+                            <h6 class="font300 mb-3 task-count">Complete <span class="float-right"><%= completeTasks.length %></span></h6>
+                            <div class="dd" data-plugin="nestable">
+                                <ol class="dd-list" id="complete-tasks" data-category="complete">
+                                    <% for(var task of completeTasks) { %>
+                                        <li class="dd-item" id="<%= task._id %>" data-category="<%= task.category %>" data-id="<%= task._id %>">
+                                            <div class="dd-handle d-flex justify-content-between align-items-center">
+                                                <div><%= task.title %></div>
+                                                <div class="action" data-description="<%= task.description %>" data-date="<%= task.date %>" data-title="<%= task.title %>" data-id="<%= task._id %>">
+                                                     <a class="task-edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                                    <a class="task-delete-btn" href="#"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="dd-content p-15">
+                                                <p><%= task.description %></p>
+                                                <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                                                    <li class="mr-2 flex-grow-1 bd-highlight"><span class="badge badge-default"><i class="fa fa-clock-o"></i> 18 Jan</span></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-comments"></i> 5</a></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-check-square"></i> 11</a></li>
+                                                    <li class="ml-3 bd-highlight">
+                                                        <ul class="list-unstyled sm team-info margin-0">
+                                                            <li><img src="/static/assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                                            <li><img src="/static/assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                </ol>
+                            </div>
+                            <button data-category="complete" class="btn btn-task-add btn-primary btn-block" type="button">ADD NEW</button> </div> </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="body taskboard b-red incompleted_task">
+                            <h6 class="font300 mb-3 task-count">InComplete <span class="float-right"><%= incompleteTasks.length %></span></h6>
+                            <div class="dd" data-plugin="nestable">
+                                <ol class="dd-list" data-category="incomplete" id="incomplete-tasks">
+                                    <% for(var task of incompleteTasks) { %>
+                                        <li class="dd-item" id="<%= task._id %>" data-category="<%= task.category %>" data-id="<%= task._id %>">
+                                            <div class="dd-handle d-flex justify-content-between align-items-center">
+                                                <div><%= task.title %></div>
+                                                <div class="action" data-description="<%= task.description %>" data-date="<%= task.date %>" data-title="<%= task.title %>" data-id="<%= task._id %>">
+                                                     <a class="task-edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                                    <a class="task-delete-btn" href="#"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="dd-content p-15">
+                                                <p><%= task.description %></p>
+                                                <ul class="list-unstyled d-flex bd-highlight align-items-center">
+                                                    <li class="mr-2 flex-grow-1 bd-highlight"><span class="badge badge-default"><i class="fa fa-clock-o"></i> 18 Jan</span></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-comments"></i> 5</a></li>
+                                                    <li class="ml-3 bd-highlight"><a href="javascript:void(0);" class="text-muted"><i class="zmdi zmdi-check-square"></i> 11</a></li>
+                                                    <li class="ml-3 bd-highlight">
+                                                        <ul class="list-unstyled sm team-info margin-0">
+                                                            <li><img src="/static/assets/images/xs/avatar7.jpg" alt="Avatar"></li>
+                                                            <li><img src="/static/assets/images/xs/avatar8.jpg" alt="Avatar"></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                </ol>
+                            </div>
+                            <button data-category="incomplete" class="btn btn-task-add btn-primary btn-block" type="button">ADD NEW</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="modal fade" id="addtask" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Task</h4>
+            </div>
+            <form class="modal-body" id="add-task-form" action="/contact/add" method="POST">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="add-task-title" placeholder="Title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" name="date" required class="form-control round" id="add-task-date" placeholder="Date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea name="description" class="form-control round" id="add-task-description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="handleAddTask()" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updatetaskmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update Task</h4>
+            </div>
+            <form class="modal-body" id="add-task-form" method="POST">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="update-task-title" placeholder="Title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" name="date" required class="form-control round" id="update-task-date" placeholder="Date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea name="description" class="form-control round" id="update-task-description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="handleUpdateTask()" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/bundles/mainscripts.bundle.js"></script>
+<script src="/static/assets/vendor/nestable/jquery.nestable.js"></script><!-- Jquery Nestable -->
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+<script>
+    var category = "";
+    $(".dd").nestable();
+    $(".dd").on("change", function(){
+        var ddContainer = $(this);
+        var items = ddContainer[0].querySelectorAll(".dd-item");
+        ddContainer.siblings(".task-count").find("span").text(items.length);
+        for(var i = 0; i<items.length; i++){
+            var ddItem = items[i];
+            var parentCategory = $(ddItem.parentNode).data("category");
+            var id = $(ddItem).data("id");
+            if($(ddItem).data("category") != parentCategory){
+                var data = {newCategory: parentCategory};
+                $.ajax({
+                    url: `/project/taskboard/updateCategory/${id}`,
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify(data),
+                    success: function(data){
+                        if (data.error){
+                            toastErr(data.error);
+                            console.log("error")
+                            return;
+                        }
+                        console.log("success")
+                        toastSuccess(`${data.title} changed to ${data.category} successfully`);
+                    },
+                    error: function(err){
+                        console.log(err);
+                        toastErr(err);
+                    }
+                })
+            }
+        }
+    })
+    
+    $(".btn-task-add").click(function(){
+       category = $(this).data("category"); 
+       $("#addtask").modal("toggle");
+    })
+
+    function handleAddTask(){
+        var form = document.getElementById("add-task-form");
+        var title = $("#add-task-title").val();
+        var description = $("#add-task-description").val();
+        var date = $("#add-task-date").val();
+
+        if (!form.checkValidity()) return form.reportValidity();
+
+        var data = {category, title, description, date};
+        addToBackend(data, "/project/taskboard/", "title");
+        /*
+        $.ajax({
+            url: "/project/taskboard/addtask",
+            method: "POST",
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            success: function(data){
+                console.log(data)
+                if(data.error){
+                    toastErr(data.error)
+                    return;
+                }
+                window.location.href = `/project/taskboard?addSuccessful=true&name=${data.title}`;
+            },
+            error: function(err){
+                toastErr(err);
+            }
+        })
+        */
+    }
+
+    function handleDeleteTask(id, data){
+        console.log(id);
+        $.ajax({
+            url: `/project/taskboard/delete/${id}`,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify(data),
+            success: function(data){
+                if (data.error){
+                    toastErr(data.error);
+                    return;
+                }
+                window.location.href = `/project/taskboard?deleteSuccessful=true&name=${data.title}`;
+            },
+            error: function(err){
+                toastErr(err);
+            }
+        })
+    }
+
+    $(".task-delete-btn").on("mousedown", function(e){
+        e.preventDefault();
+        var title = $(this).parent().data("title");
+        /*
+        var description = $("#update-task-description");
+        var date = $("#update-task-date");
+        var data = {title, description, date};
+        */
+        var $id = $(this).parent().data("id");
+        handleDeleteTask($id, {title});
+        return false;
+    });
+    
+    var updateId = ""; 
+    $('.task-edit-btn').on("mousedown", function(e){
+        e.preventDefault();
+        var $parent = $(this).parent();
+        var $id = $parent.data("id");
+        var title = $parent.data("title");
+        var description = $parent.data("description");
+        var date = new Date($parent.data("date"));
+
+
+        $("#update-task-title").val(title);
+        $("#update-task-description").val(description);
+        document.getElementById("update-task-date").valueAsDate = date;
+
+        updateId = $id;
+
+        $("#updatetaskmodal").modal("toggle");
+
+        return false;
+    });
+
+    function handleUpdateTask(){
+        var title = $("#update-task-title").val();
+        var description = $("#update-task-description").val();
+        var date = $("#update-task-date").val();
+
+        var data = {title, description, date};
+        $.ajax({
+            url: `/project/taskboard/updatetask/${updateId}`,
+            method: "POST",
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            success: function(data){
+                console.log(data)
+                if(data.error){
+                    toastErr(data.error)
+                    return;
+                }
+                window.location.href = `/project/taskboard?updateSuccessful=true&name=${data.title}`;
+            },
+            error: function(err){
+                toastErr(err);
+            }
+        })
+    }
+    
+
+</script>

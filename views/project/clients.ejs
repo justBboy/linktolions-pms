@@ -1,0 +1,143 @@
+<%- include("../partials/dashboard-skeleton.ejs") %>
+
+<div id="main-content">        
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h2>Clients</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="#">Project</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Clients</li>
+                            </ol>
+                        </nav>
+                    </div>            
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <form action="/project/clients/search" method="POST" class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <input name="name" type="text" class="form-control" placeholder="Client Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-4 col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="project" class="form-control" placeholder="Project">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                    <button href="javascript:void(0);" class="btn btn-sm btn-primary" type="submit" title="">Search</button>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-success" data-toggle="modal" data-target="#addclientmodal" title="">Add New</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% for(client of clients) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="card c_grid c_cyan">
+                            <div class="body text-center">
+                                <div class="circle">
+                                    <img class="rounded-circle" src="/static/assets/images/sm/avatar2.jpg" alt="">
+                                </div>
+                                <h6 class="mt-3 mb-0"><%= client.name %></h6>
+                                <span><%= client.email %></span>
+                                <ul class="mt-3 list-unstyled d-flex justify-content-center">
+                                    <% if (client.facebook) { %>
+                                        <li><a class="p-3" target="_blank" href="<%= client.facebook %>"><i class="fa fa-facebook"></i></a></li>
+                                    <% } %>
+                                    <% if (client.slack) { %>
+                                        <li><a class="p-3" target="_blank" href="<%= client.slack %>"><i class="fa fa-slack"></i></a></li>
+                                    <% } %>
+                                    <% if (client.linkedin) { %>
+                                        <li><a class="p-3" target="_blank" href="<%= client.linkedin %>"><i class="fa fa-linkedin"></i></a></li>
+                                    <% } %>
+                                    <% if (client.skype) { %>
+                                        <li><a class="p-3" target="_blank" href="<%= client.skype %>"><i class="fa fa-skype"></i></a></li>
+                                    <% } %>
+                                </ul>
+                                <div class="row text-center mt-4">
+                                    <div class="col-lg-6 border-right">
+                                        <label class="mb-0">Project</label>
+                                        <h4 class="font-20"><%= client.projectsCount %></h4>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="mb-0">Profit</label>
+                                        <h4 class="font-20">$<span><%= client.profit %></span></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="modal fade" id="addclientmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Client</h4>
+            </div>
+            <form class="modal-body" id="add-client-form" action="/project/clients/add" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="name" required class="form-control round" id="add-client-name" placeholder="Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="email" name="email" required class="form-control round" id="add-client-email" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="tag" class="form-control round" id="add-client-tag" placeholder="Tag">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="facebook" class="form-control round" id="add-client-facebook" placeholder="Facebook">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="slack" class="form-control round" id="add-client-slack" placeholder="Slack">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="linkedin" class="form-control round" id="add-client-linkedin" placeholder="Linkedin">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="skype" class="form-control round" id="add-client-skype" placeholder="Skype">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="projectsCount" class="form-control round" id="add-client-projects-count" placeholder="Projects Count">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+

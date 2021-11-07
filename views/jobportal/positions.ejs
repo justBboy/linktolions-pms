@@ -1,0 +1,313 @@
+<%- include("../partials/jobportal-skeleton.ejs") %>
+
+<div id="main-content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-12">
+                        <h1>Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Oculux</a></li>
+                            <li class="breadcrumb-item"><a href="/jobportal">Job</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Positions</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>Search</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>TYPE</label>
+                                    <div class="multiselect_div">
+                                        <select id="multiselect3-all" name="multiselect3[]" class="multiselect multiselect-custom" multiple="multiple">
+                                            <option value="multiselect-all">Select All</option>
+                                            <option value="All Types">All Types</option>
+                                            <option value="Full-time">Full-time</option>
+                                            <option value="Part-time">Part-time</option>
+                                            <option value="Internship">Internship</option>
+                                            <option value="Freelance">Freelance</option>
+                                            <option value="Remote">Remote</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>Category</label>
+                                    <div class="form-group">
+                                        <select class="custom-select">
+                                            <option selected="">Designer</option>
+                                            <option value="1">Project Manager</option>
+                                            <option value="2">Senior Developer</option>
+                                            <option value="3">Front-end Developer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>Salary</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Min. Salary">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>&nbsp;</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Max. Salary">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label>&nbsp;</label>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-block" title="">Filter</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12">
+                        <div class="col-md-12 col-sm-12 text-right hidden-xs">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-round" data-toggle="modal" data-target="#addpositionmodal" title="">Add New</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover js-basic-example dataTable table-custom spacing5 mb-0">
+                                <tbody>
+                                    <% const colors = ['red', 'blue', 'green', 'orange', 'indigo'] %>
+                                    <% for (const position of positions) { %>
+                                        <% const typeColor = position.type === positionTypes.FULL_TIME ? "success" : position.type === positionTypes.PART_TIME ? "warning" : position.type === positionTypes.INTERNSHIP ? "info" : position.type === positionTypes.FREELANCE ? "primary" : position.type === positionTypes.REMOTE ? "" : "" %>
+                                        <tr>
+                                            <td class="w60">
+                                                <div class="avtar-pic w35 bg-<%= colors[Math.floor(Math.random() * colors.length)] %>" data-toggle="tooltip" data-placement="top" title="" data-original-title="Avatar Name">
+                                                    <span><%= position.title.substr(0, 2) %></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div title="<%= position.title %>" class="font-15"><%= position.title %></div>
+                                                <span title="<%= position.category %>" class="text-muted"><%= position.category %></span>
+                                            </td>
+                                            <td><span class="badge badge-<%= typeColor %> text-uppercase"><%= position.type %></span></td>
+                                            <td>Applicants: <strong>0</strong></td>
+                                            <td><%= position.expiry.toDateString() %></td>
+                                            <td><span class="badge badge-<%= position.status === statusTypes.APPROVED ? 'success' : position.status === statusTypes.PENDING ? 'warning' : 'danger' %>"><%= position.status === statusTypes.PENDING ? "pending" : position.status === statusTypes.APPROVED ? "approved" : position.status === statusTypes.DECLINED ? "declined" : "" %></span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-delete-position btn-sm" data-name="<%= position.title %>" data-id="<%= position._id %>">Delete</button>
+                                                <button 
+                                                data-title="<%= position.title %>" 
+                                                data-category="<%= position.category %>"
+                                                data-type="<%= position.type %>"
+                                                data-status="<%= position.status %>"
+                                                data-location="<%= position.location %>"
+                                                data-expiry="<%= position.expiry %>"
+                                                data-id="<%= position._id %>"
+                                                type="button" 
+                                                class="btn btn-warning btn-update-position btn-sm">Update</button>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <ul class="pagination mt-2">
+                        <% if(lastPageNumber > 1) { %>
+                                <li class="page-item">
+                                <a class="page-link" href="/contact?page=<%= pageNumber-1 %>" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <li class="page-item <%= pageNumber == 1 ? 'active' : '' %>"><a class="page-link" href="/contact?page=1">1</a></li>
+                                <li class="page-item <%= pageNumber == 2 ? 'active' : '' %>"><a class="page-link" href="/contact?page=2">2</a></li>
+                                <% for(var i =pageNumber; i<pageNumber+4; i++) { %>
+                                    <% if(i < lastPageNumber && i > 2) { %>
+                                        <li class="page-item <%= pageNumber == i ? 'active' : '' %>"><a class="page-link" href="/contact?page=<%= i %>"><%= i %></a></li>
+                                    <% } %>
+                                <% } %>
+                                <li class="page-item <%= pageNumber == lastPageNumber ? 'active' : '' %>"><a class="page-link" href="/contact?page=<%= lastPageNumber %>"><%= lastPageNumber %></a></li>
+                                <% if (pageNumber < lastPageNumber) { %>
+                                    <a class="page-link" href="/contact?page=<%= pageNumber+1 %>" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                <% } %>
+                                </li>
+                            <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="modal fade" id="addpositionmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Add Position</h4>
+            </div>
+            <form class="modal-body" id="add-client-form" action="/jobportal/positions/add" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="add-position-title" placeholder="Title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="type" class="form-control round" id="add-position-type">
+                            <% for (const type of POSITION_TYPES) { %>
+                                <option value="<%= type %>"><%= type %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="category" class="form-control round" id="add-position-category" placeholder="Category">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="location" class="form-control round" id="add-position-location" placeholder="Location">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label for="status" class="text-muted">Status: </label>
+                        <select name="status" class="form-control round" id="add-position-status">
+                            <% for (const type of STATUS_LIST) { %>
+                                <% const item = type === statusTypes.APPROVED ? "Approved" : type === statusTypes.DECLINED ? "Declined" : type === statusTypes.PENDING ? "Pending" : ""; %>
+                                <option value="<%= type %>"><%= item %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label for="expiry" class="text-muted">Expiry: </label>
+                        <input type="date" name="expiry" class="form-control round" id="add-position-expiry" placeholder="Expiry">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Add</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updatepositionmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update Position</h4>
+            </div>
+            <form class="modal-body" id="update-position-form" action="/jobportal/positions/add" method="POST"> <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="title" required class="form-control round" id="update-position-title" placeholder="Title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="type" class="form-control round" id="update-position-type">
+                            <% for (const type of POSITION_TYPES) { %>
+                                <option value="<%= type %>"><%= type %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="category" class="form-control round" id="update-position-category" placeholder="Category">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="location" class="form-control round" id="update-position-location" placeholder="Location">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label for="status" class="text-muted">Status: </label>
+                        <select name="status" class="form-control round" id="update-position-status">
+                            <% for (const type of STATUS_LIST) { %>
+                                <% const item = type === statusTypes.APPROVED ? "Approved" : type === statusTypes.DECLINED ? "Declined" : type === statusTypes.PENDING ? "Pending" : ""; %>
+                                <option value="<%= type %>"><%= item %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label for="expiry" class="text-muted">Expiry: </label>
+                        <input type="date" name="expiry" class="form-control round" id="update-position-expiry" placeholder="Expiry">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="update-position-btn" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+
+<script>
+    $(".btn-delete-position").click(function(){
+        var $id = $(this).data("id");
+        var $name = $(this).data("name");
+        deleteFromBackend($id, $name, "/jobportal/positions/");
+    })
+
+    var updateId = "";
+
+    $(".btn-update-position").click(function(){
+        var title = $(this).data("title");
+        var category = $(this).data("category");
+        var expiry = new Date($(this).data("expiry"));
+        var type = $(this).data("type");
+        var status = $(this).data("status");
+        var location = $(this).data("location");
+        var id = $(this).data("id"); 
+        updateId = id;
+
+        $("#update-position-title").val(title);
+        $("#update-position-category").val(category);
+        $("#update-position-status").val(status);
+        $("#update-position-location").val(location);
+        $("#update-position-type").val(type);
+        document.getElementById("update-position-expiry").valueAsDate = expiry;
+
+        $("#updatepositionmodal").modal("toggle");
+    })
+
+    $("#update-position-btn").click(function(){
+        var form = document.getElementById("update-position-form");
+        var title = $("#update-position-title").val();
+        var category = $("#update-position-category").val();
+        var status = $("#update-position-status").val();
+        var location = $("#update-position-location").val();
+        var type = $("#update-position-type").val();
+        var expiry = document.getElementById("update-position-expiry").valueAsDate;
+
+        if(!form.checkValidity()) return form.reportValidity();
+        
+        var data = {title, category, status, location, expiry, type};
+
+        updateToBackend(updateId, data, "/jobportal/positions/", "title");
+    })
+
+</script>
