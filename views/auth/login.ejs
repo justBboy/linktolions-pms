@@ -28,11 +28,11 @@
                 <form class="form-auth-small m-t-20" method="POST" action=<%= `/auth/login?next=${nextUrl}` %>>
                     <div class="form-group">
                         <label for="signin-email" class="control-label sr-only">Email</label>
-                        <input type="email" name="email" class="form-control round" id="signin-email" placeholder="Email">
+                        <input type="email" name="email" required class="form-control round" id="signin-email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="signin-password" class="control-label sr-only">Password</label>
-                        <input type="password" name="password" class="form-control round" id="signin-password" placeholder="Password">
+                        <input type="password" name="password" required class="form-control round" id="signin-password" placeholder="Password">
                     </div>
                     <div class="form-group clearfix">
                         <label class="fancy-checkbox element-left">

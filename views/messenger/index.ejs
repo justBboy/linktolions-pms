@@ -27,168 +27,22 @@
                                     </div>
                                 </div>
                                 <ul id="chat_users" class="right_chat list-unstyled mb-0">                                
-                                    <li class="offline">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-red"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Folisise Chosielie</span>
-                                                    <span class="message">offline</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar3.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Marshall Nichols</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-red"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Louis Henry</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-orange"><span>DS</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Debra Stewart</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="offline">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-green"><span>SW</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Lisa Garett</span>
-                                                    <span class="message">offline since May 12</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar5.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Debra Stewart</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="offline">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <img class="media-object " src="../assets/images/xs/avatar2.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Lisa Garett</span>
-                                                    <span class="message">offline since Jan 18</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-indigo"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Louis Henry</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="online">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-pink"><span>DS</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Debra Stewart</span>
-                                                    <span class="message">online</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
-                                    <li class="offline">
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 bg-info"><span>SW</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Lisa Garett</span>
-                                                    <span class="message">offline since May 12</span>
-                                                    <span class="badge badge-outline status"></span>
-                                                </div>
-                                            </div>
-                                        </a>                            
-                                    </li>
+                                    
                                 </ul>
                             </div>
-                            <div class="chatapp_body">
+                            <div id="chatapp_body" class="chatapp_body">
                                 <div class="chat-header clearfix">
                                     <div class="row clearfix">
                                         <div class="col-lg-12">
                                             <div class="chat-about">
-                                                <h6 class="m-b-0">Louis Pierce</h6>
+                                                <h6 id="chatapp_current_chat_name" class="m-b-0"></h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="chat-history">
+                                <div class="chat-history" id="chat-history-container" style="min-height: 300px; max-height: 500px; overflow-y: auto">
                                     <ul class="message_data" id="message-data">
-                                        <li class="right clearfix">
-                                            <img class="user_pix" src="../assets/images/xs/avatar7.jpg" alt="avatar">
-                                            <div class="message">
-                                                <span>Hi Aiden, how are you?<br> How is the project coming along?</span>
-                                            </div>
-                                            <span class="data_time">10:12 AM, Today</span>
-                                        </li>
-                                        <li class="left clearfix">
-                                            <img class="user_pix" src="../assets/images/user.png" alt="avatar">
-                                            <div class="message">
-                                                <span>Are we meeting today?</span>
-                                            </div>
-                                            <span class="data_time">10:12 AM, Today</span>
-                                        </li>
-                                        <li class="right clearfix">
-                                            <img class="user_pix" src="../assets/images/xs/avatar5.jpg" alt="avatar">
-                                            <div class="message">
-                                                <span>How is the project coming along?</span>
-                                            </div>
-                                            <span class="data_time">10:12 AM, Today</span>
-                                        </li>
-                                        <li class="left clearfix">
-                                            <img class="user_pix" src="../assets/images/user.png" alt="avatar">
-                                            <div class="message">
-                                                <span>Project has been already finished and I have<br> results to show you.</span>
-                                            </div>
-                                            <span class="data_time">10:16 AM, Today</span>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                                 <div class="chat-message clearfix">
@@ -199,21 +53,13 @@
                                                 <a href="javascript:void(0);" class="btn btn-link"><i class="icon-camcorder text-warning"></i></a>
                                             </span>
                                         </div>
-                                        <textarea type="text" style="resize: none;" row="" class="form-control" placeholder="Enter text here..."></textarea>
-                                        <button class="btn btn-info">Submit</button>
+                                        <textarea type="text" style="resize: none;" row="" id="chat-message-text" class="form-control" placeholder="Enter text here..."></textarea>
+                                        <button id="chat-submit-btn" class="btn btn-info">Submit</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="chatapp_detail text-center vivify pullLeft delay-150">
-                                <div class="profile-image"><img src="../assets/images/user.png" class="rounded-circle mb-3" alt=""></div>
-                                <h5 class="mb-0">Louis Pierce</h5>                                
-                                <small class="text-muted">Address: </small>
-                                <p> San Francisco</p>
-                                <small class="text-muted">Email address: </small>
-                                <p>louispierce@example.com</p>
-                                <small class="text-muted">Mobile: </small>
-                                <p>+ 202-222-2121</p>
-                                <button class="btn btn-round btn-success">View Profile</button>
+                            <div id="chatapp_detail" class="chatapp_detail text-center vivify pullLeft delay-150">
+                                
                             </div>
                         </div>
                     </div>
@@ -222,3 +68,8 @@
         </div>
     </div>
 </div>
+
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>

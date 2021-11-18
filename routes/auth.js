@@ -4,6 +4,7 @@ const Joi = require('joi');
 const User = require("../models/User");
 const multer = require("multer");
 const upload = multer({dest: '../static/profile_pics'});
+const {isAuthenticated} = require("../utils");
 
 const userSchema = Joi.object({
     username: Joi.string().required(),
@@ -59,7 +60,18 @@ router.post("/register", upload.single('profile_pic'), async (req, res) => {
     }
 })
 
-router.get("/logout", (req, res) => {
+router.get("/getuser", isAuthenticated, async (req, res) => {
+    try{
+        res.json(req.user)
+    }
+    catch(err){
+        console.log(err);
+        const error = err.details ? err.details[0].message : err._message;
+        res.json(error);
+    }
+})
+
+router.get("/logout", isAuthenticated, (req, res) => {
     req.logout();
     res.redirect("/auth/login");
 })

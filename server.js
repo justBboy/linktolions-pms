@@ -47,10 +47,6 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(err)
 })
 
-io.on("connection", function(socket){
-    socket.emit("hello")
-})
-
 //routes
 routes(app, io);
 
