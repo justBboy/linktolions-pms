@@ -25,11 +25,10 @@
                             <div class="body mail-left">
                                 <div class="mail-side">
                                     <ul class="nav">
-                                        <li class="active"><a href="app-inbox.html"><i class="icon-drawer"></i>Inbox<span class="badge badge-primary float-right">6</span></a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-cursor"></i>Sent<span class="badge badge-warning float-right">6</span></a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-envelope-open"></i>Draft</a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-action-redo"></i>Outbox</a></li>                                        
-                                        <li><a href="javascript:void(0);"><i class="icon-trash"></i>Trash</a></li>
+                                        <li id="mail-inbox-btn" ><a href="/email?filter=inbox"><i class="icon-drawer"></i>Inbox<span class="badge badge-primary float-right">6</span></a></li>
+                                        <li id="mail-sent-btn"><a href="/email?filter=sent"><i class="icon-cursor"></i>Sent<span class="badge badge-warning float-right">6</span></a></li>
+                                        <li id="mail-draft-btn"><a href="/email?filter=draft"><i class="icon-envelope-open"></i>Draft</a></li>
+                                        <li id="mail-trash-btn"><a href="/email?filter=trash"><i class="icon-trash"></i>Trash</a></li>
                                     </ul>
                                     <h3 class="label">Labels</h3>
                                     <ul class="nav">
@@ -41,16 +40,16 @@
                                 </div>
                             </div>
                             <div class="body mail-right check-all-parent">
-                                <div class="mail-compose">
+                                <div id="mail-compose-div" class="mail-compose">
                                     <form>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="To">
+                                            <input type="email" id="email-compose-to" class="form-control" placeholder="To email: ">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Subject">
+                                            <input type="text" id="email-compose-subject" class="form-control" placeholder="Subject: ">
                                         </div>
                                     </form>
-                                    <div class="summernote">
+                                    <div id="email-summernote">
                                         Hello!,
                                         <br/>
                                         <br/>
@@ -64,8 +63,8 @@
                                         <p>Oculux Admin</p>
                                     </div>
                                     <div class="m-t-30 text-right">
-                                        <button type="button" class="btn btn-success btn-round">Send Message</button>
-                                        <button type="button" class="btn btn-outline-secondary btn-round">Draft</button>
+                                        <button type="button" id="email-submit-btn" class="btn btn-success btn-round">Send Message</button>
+                                        <button type="button" id="email-draft-btn" class="btn btn-outline-secondary btn-round">Draft</button>
                                         <a href="/email" class="btn btn-outline-secondary btn-round">Cancel</a>
                                     </div>
                                 </div>
@@ -78,7 +77,7 @@
     </div>
     
 </div>
-
-<script>
-    
-</script>
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>

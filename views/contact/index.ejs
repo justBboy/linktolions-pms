@@ -52,10 +52,10 @@
                         <ul class="pagination">
                             <% if(lastPageNumber > 1) { %>
                                 <li class="page-item">
-                                <a class="page-link" href="/contact?page=<%= pageNumber-1 %>" aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
+                                    <a class="page-link" href="/contact?page=<%= pageNumber-1 %>" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
                                 </li>
                                 <li class="page-item <%= pageNumber == 1 ? 'active' : '' %>"><a class="page-link" href="/contact?page=1">1</a></li>
                                 <li class="page-item <%= pageNumber == 2 ? 'active' : '' %>"><a class="page-link" href="/contact?page=2">2</a></li>

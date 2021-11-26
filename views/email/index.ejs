@@ -27,12 +27,11 @@
                                     <a href="/email/compose" class="btn btn-danger btn-block btn-round">Compose</a>
                                 </div>
                                 <div class="mail-side">
-                                    <ul class="nav">
-                                        <li class="active"><a href="app-inbox.html"><i class="icon-drawer"></i>Inbox<span class="badge badge-primary float-right">6</span></a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-cursor"></i>Sent<span class="badge badge-warning float-right">6</span></a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-envelope-open"></i>Draft</a></li>
-                                        <li><a href="javascript:void(0);"><i class="icon-action-redo"></i>Outbox</a></li>                                        
-                                        <li><a href="javascript:void(0);"><i class="icon-trash"></i>Trash</a></li>
+                                    <ul id="mail-filter-list" class="nav">
+                                        <li id="mail-inbox-btn" ><a href="/email?filter=inbox"><i class="icon-drawer"></i>Inbox<span class="badge badge-primary float-right">6</span></a></li>
+                                        <li id="mail-sent-btn"><a href="/email?filter=sent"><i class="icon-cursor"></i>Sent<span class="badge badge-warning float-right">6</span></a></li>
+                                        <li id="mail-draft-btn"><a href="/email?filter=draft"><i class="icon-envelope-open"></i>Draft</a></li>
+                                        <li id="mail-trash-btn"><a href="/email?filter=trash"><i class="icon-trash"></i>Trash</a></li>
                                     </ul>
                                     <h3 class="label">Labels</h3>
                                     <ul class="nav">
@@ -53,7 +52,7 @@
                                                 <span></span>
                                             </label>
                                         </div>
-                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                        <a href="javascript:void(0);" id="mail-delete-btn" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
                                         <a href="javascript:void(0);" class="btn btn-light btn-sm hidden-sm"><i class="icon-refresh"></i></a>                                        
                                         <div class="btn-group">
                                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-tag"></i></button>
@@ -75,7 +74,7 @@
                                     </div>
                                 </div>
                                 <div class="mail-list">
-                                    <ul class="list-unstyled">
+                                    <ul id="mails-list-container" class="list-unstyled">
                                         <li class="clearfix">
                                             <div class="md-left">
                                                 <label class="fancy-checkbox">
@@ -229,12 +228,8 @@
                                     </ul>
                                 </div>
 
-                                <ul class="pagination mb-0">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                                <ul id="mails-pagination-container" class="pagination mb-0">
+
                                 </ul>
                             </div>
                         </div>
@@ -245,3 +240,7 @@
     </div>
     
 </div>
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>    
+<script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>

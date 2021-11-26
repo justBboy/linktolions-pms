@@ -72,20 +72,26 @@ function addToBackend(data, url, name){
         })
 }
 
+function removeFromArray(array, item){
+    const itemIndx = array.findIndex((it) => it === item);
+    array.splice(itemIndx, 1);
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 	var routes = new URLSearchParams(window.location.search)
 	var deleteSuccessful = routes.get("deleteSuccessful");
 	var updateSuccessful = routes.get("updateSuccessful");
-	var addSuccessful = routes.get("addSuccessful");
+    var addSuccessful = routes.get("addSuccessful");
+    var sentSuccessful = routes.get("sentSuccessful");
     var error = routes.get("error");
 	var name = routes.get("name");
 	console.log(routes);
-	if (deleteSuccessful || updateSuccessful || addSuccessful){
+	if (deleteSuccessful || updateSuccessful || addSuccessful || sentSuccessful){
 		console.log("hello")
 		toastr.options.timeOut = 4998;
 		toastr.options.closeButton = true;
 		toastr.options.positionClass = 'toast-bottom-right';
-		toastr['success'](`Contact of ${name} Successfully ${deleteSuccessful ? 'Deleted' : updateSuccessful ? 'Updated' : 'Added'}`);
+		toastr['success'](`Contact of ${name} Successfully ${deleteSuccessful ? 'Deleted' : updateSuccessful ? 'Updated' : sentSuccessful ? 'Sent' : 'Added'}`);
 	}
     else if (error){
         toastErr(error);
