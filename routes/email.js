@@ -88,15 +88,13 @@ router.get("/all", isAuthenticated, async (req, res) => {
                 mailsLength = 0;
         }
         const lastPageNumber = mailsLength > perPage ? Math.ceil(mailsLength/perPage) : 1;
-        console.log(mails);
        res.json({mails, mailsLength, lastPageNumber, pageNumber}); 
     }
     catch(err){
         console.log(err);
         let error = err.details ? err.details[0].message : err._message ? err._message : err;
-        if(typeof error === "object"){
+        if(typeof error === "object")
             error = error.code === "EDNS" ? "No internet connection" : "Unknown error happened, try again";
-        }
         res.json({error});
     }
 })
@@ -121,11 +119,13 @@ router.delete("/:id", isAuthenticated, async (req, res) => {
     try{
         const mail = await Mail.findById(id);
         if(mail.trashed){
+            console.log("if trashed", mail);
             await Mail.deleteOne({_id: id});
-            res.json({success: true, title: mail.to})
+            return res.json({success: true, title: mail.to})
         }
-        const updated = await Mail.updateOne({id}, {trashed: true});
-        res.json({success: true, title: updated.to});
+        const updated = await Mail.updateOne({_id: id}, {trashed: true});
+        console.log("if not trashed", updated);
+        res.json({success: true, title: mail.to});
     }
     catch(err){
         console.log(err);

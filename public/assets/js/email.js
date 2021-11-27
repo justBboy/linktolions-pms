@@ -176,12 +176,13 @@ function Email(){
 
     this.deleteMail = async (id) => {
         try{
-            const data = await fetch(`/email/${id}`, {
+            const res = await fetch(`/email/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
+            const data = await res.json();
             return data;
         }
         catch(err){
@@ -198,8 +199,8 @@ function Email(){
     }
 
     this.refreshDelete = (id) => {
-
-        
+        this.mails = this.mails.filter(mail => mail._id !== id);
+        this.fillMails(this.mails);
     }
 
     this.fillMails = async (mails) => {
@@ -350,19 +351,23 @@ function Email(){
                 if(checked)
                     this.selectedMails.push(id);
                 else
-                    removeFromArray(this.selectedMails, id)
+                    this.selectedMails = removeFromArray(this.selectedMails, id)
             })
         })
     }
 
     this.bindDeleteBtnListener = () => {
-        this.mailDeleteBtn.addEventListener("click", () => {
+        this.mailDeleteBtn.addEventListener("click", (e) => {
+            e.preventDefault();
             this.selectedMails.forEach(async (mailId) => {
-                const data = await this.deleteMail(mailId);
-                if(data.error)
-                    toastErr(data.error)
-                toastSuccess(`Mail to ${data.title} successfully deleted`)
+                const mail = await this.deleteMail(mailId);
+                console.log(mail);
+                if(mail.error)
+                    toastErr(mail.error)
+                toastSuccess(`Mail to ${mail.title} successfully deleted`)
+                this.refreshDelete(mailId);
             })
+            this.selectedMails = []
         })
     }
 }

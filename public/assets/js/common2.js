@@ -73,8 +73,8 @@ function addToBackend(data, url, name){
 }
 
 function removeFromArray(array, item){
-    const itemIndx = array.findIndex((it) => it === item);
-    array.splice(itemIndx, 1);
+    const newArr = array.filter(it => it !== item);
+    return newArr;
 }
 
 document.addEventListener("DOMContentLoaded", function(){
