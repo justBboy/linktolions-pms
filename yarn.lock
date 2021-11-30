@@ -1338,6 +1338,14 @@ node-fetch@^2.6.5:
   dependencies:
     whatwg-url "^5.0.0"
 
+node-imap@^0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/node-imap/-/node-imap-0.9.6.tgz#b98d87f4a99dbf5184e567cd6b0f3094014f64eb"
+  integrity sha512-pYQ2AtjQwrSvILq8EYInv3E3svrJwrTOxzW7uBGpP//AkCs/pMdO+O6KEgUlSchh/0/N0MSWs5io3xZhxJ9yLg==
+  dependencies:
+    readable-stream "^3.6.0"
+    utf7 "^1.0.2"
+
 nodemailer@^6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.7.0.tgz#86614722c4e0c33d1b5b02aecb90d6d629932b0d"
@@ -1985,7 +1993,7 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
-utf7@>=1.0.2:
+utf7@>=1.0.2, utf7@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/utf7/-/utf7-1.0.2.tgz#955f490aae653ba220b9456a0a8776c199360991"
   integrity sha1-lV9JCq5lO6IguUVqCod2wZk2CZE=
