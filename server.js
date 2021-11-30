@@ -16,6 +16,8 @@ app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+const PORT = process.env.PORT || 5000;
+
 // middleware
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -59,7 +61,7 @@ io.use((socket, next) => {
     next(); 
 })
 
-httpServer.listen(5000, (err) => {
+httpServer.listen(PORT, (err) => {
     if (err) return;
         console.log("server running on http://localhost:5000");
     }
