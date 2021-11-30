@@ -3,7 +3,6 @@ const passport = require("passport");
 const Joi = require('joi');
 const User = require("../models/User");
 const multer = require("multer");
-const upload = multer({dest: '../static/profile_pics'});
 const {isAuthenticated} = require("../utils");
 
 const userSchema = Joi.object({
@@ -45,7 +44,7 @@ router.get("/register", (req, res) => {
     res.render("auth/register.ejs")
 })
 
-router.post("/register", upload.single('profile_pic'), async (req, res) => {
+router.post("/register", async (req, res) => {
     const data = req.body;
     try{
         const isValid = await userSchema.validateAsync(data);
