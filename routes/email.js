@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router()
 const {isAuthenticated} = require('../utils');
-const {transporter} = require("../config");
+const {transporter, imap} = require("../config");
 const Mail = require("../models/Mail");
 const Joi = require("joi");
 
@@ -132,6 +132,19 @@ router.delete("/:id", isAuthenticated, async (req, res) => {
         const error = err.details ? err.details[0].message : err._message ? err._message : err;
         res.json({error});
     }
+})
+
+function openInbox(cb){
+    imap.openInbox('INBOX', true, cb);
+}
+
+console.log(imap)
+
+imap.once("ready", function(){
+    openInbox(function(err, box){
+        if (err) throw err;
+        console.log(box);
+    })
 })
 
 module.exports = router;

@@ -2,7 +2,8 @@ const cloudinary = require("cloudinary"),
  passport = require("passport"),
  LocalStrategy = require("passport-local").Strategy,
  nodemailer = require("nodemailer"),
- User = require("./models/User");
+ User = require("./models/User"),
+ Imap = require("node-imap");
  
 
 cloudinary.config({
@@ -10,6 +11,14 @@ cloudinary.config({
     api_key: process.env.CLD_API_KEY,
     api_secret: process.env.CLD_API_SECRET,
     secure: true
+})
+
+const imap = new Imap({
+    user: "104c3887f600f8",
+    password: "61199226615fdc",
+    host: "pop3.mailtrap.io",
+    port: 1100,
+    tls: true
 })
 
 var transporter = nodemailer.createTransport({
@@ -56,5 +65,6 @@ passport.deserializeUser(async function(id, done){
 })
 
 module.exports = {
-    transporter
+    transporter,
+    imap
 }

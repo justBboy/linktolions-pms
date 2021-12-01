@@ -21,8 +21,9 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res, next) => {
     const {rememberMe} = req.body;
     const saveUser = rememberMe === "on";
-    const nextUrl = req.query.next;
-    console.log(req.query);
+    let nextUrl = req.query.next;
+    if (nextUrl.toString().includes("undefined"))
+        nextUrl = "/"
     passport.authenticate('local', function(err, user, info){
         if(err) return next(err);
         if(!user) return res.redirect("/auth/login?error=user not found");
