@@ -10,6 +10,7 @@ $(function() {
         barColor: '#77797c',        
     });
 
+    console.log(c3);
     // Employee Structure
     var chart = c3.generate({
         bindto: '#chart-bar-stacked', // id of chart wrapper

@@ -47,10 +47,7 @@ $(function(){
 		$('.mail-left').toggleClass('open');
 	});
 
-    // jobportal positions
-    $('#multiselect3-all').multiselect({
-    includeSelectAllOption: true,
-});
+  
 
 });
 

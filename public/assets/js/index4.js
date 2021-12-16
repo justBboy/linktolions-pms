@@ -1,4 +1,5 @@
 $(function() {
+    console.log(knob);
 "use strict";
     // Summary 
     $('.chart').sparkline('html', {

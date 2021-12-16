@@ -27,7 +27,7 @@ router.get("/taskboard", isAuthenticated, async (req, res) => {
     const incompleteTasks = tasks.filter(item => item.category === categoryTypes.INCOMPLETE);
     const inprogressTasks = tasks.filter(item => item.category === categoryTypes.INPROGRESS);
     res.render("project/taskboard.ejs", {
-        page: "taskboard",
+        page: "project-taskboard",
         plannedTasks,
         completeTasks,
         incompleteTasks,
@@ -107,7 +107,7 @@ router.get("/projectlist", isAuthenticated, async (req, res) => {
     try{
         const projects = await Project.find();
         res.render("project/project-list.ejs", {
-            page: "projectlist",
+            page: "project-projectlist",
             projects,
             PRIORITYLIST,
             STATUSLIST
@@ -202,7 +202,7 @@ router.get("/ticketlist", isAuthenticated, async (req, res) => {
     try{
         const tickets = await Ticket.find();
         res.render("project/ticketlist.ejs", {
-            page: "ticketlist",
+            page: "project-ticketlist",
             tickets,
             PRIORITYLIST_TICKETS,
             DEPARTMENTS
@@ -316,7 +316,7 @@ router.get("/clients", isAuthenticated, async (req, res) => {
     try{
         const clients = await Client.find();
         res.render("project/clients.ejs", {
-            page: "clients",
+            page: "project-clients",
             clients
         })
     }
@@ -369,7 +369,7 @@ router.get("/todolist", isAuthenticated, async (req, res) => {
     try{
         const todos = await Todo.find();
         res.render("project/todo-list.ejs", {
-            page: "todolist",
+            page: "project-todolist",
             todos,
             PRIORITYLIST_TODO
         })
