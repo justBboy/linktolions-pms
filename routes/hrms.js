@@ -3,6 +3,8 @@ const router = express.Router();
 const Joi = require("joi");
 const {isAuthenticated} = require("../utils");
 const User = require("../models/User");
+const Permissions = require("../models/Permissions");
+const Role = require("../models/Role");
 const {roles} = require("../constants");
 
 
@@ -22,16 +24,25 @@ const perPage = 20;
 router.get("/users", isAuthenticated, async (req, res) => {
     const pageNumber = req.query.page || 1;
     try{
+        const userRoles = await Role.find()
+                                .populate("permissions")
+                                .exec();
+        const user = await User.findById(req.user._id).populate("role").exec();
+        const userPermissions = await Permissions.findById(user.role.permissions);
         const users = await User.find()
                                 .skip((perPage * pageNumber) - perPage)
-                                .limit(perPage);
-
+                                .limit(perPage)
+                                .populate("role")
+                                .exec();
         const usersLength = await User.count();
         const lastPageNumber = usersLength > perPage ? Math.ceil(usersLength/perPage) : 1;
+        console.log(userPermissions);
         res.render("hrms/users", {
             page: "hrms-users",
             users,
             roles,
+            userPermissions,
+            userRoles,
             pageNumber,
             lastPageNumber
         });
@@ -50,31 +61,67 @@ const userSchema = Joi.object({
     role: Joi.number().valid(0, 1, 2)
 })
 
-router.post("/users/add", isAuthenticated, async (req, res) => {
+const permissionsSchema = Joi.object()
+
+router.post("/updateUserPermissions", isAuthenticated, async(req, res) => {
     const data = req.body;
     try{
-        const isValid = await userSchema.validateAsync(data);
-        if (isValid.error) return res.redirect(`/users?error=${isValid.error.message}`);
-
-        const newUser = await User.create(data);
-        res.redirect(`/users?addSuccessful=true&name=${newUser.username}`);
+        if(req.user.role.role !== roles.SUPERADMIN) throw {details: [{message: "Unauthorized"}]};
+        const isValid = await permissionsSchema.validateAsync(data);
+        if(isValid.error) return res.redirect(`/hrms/users?error=${isValid.error.message}`);
+        for (const permissionId of Object.keys(data)){
+            await Permissions.findByIdAndUpdate(permissionId, {
+                permissions: {
+                    user: {
+                        read: data[permissionId].read === 'on',
+                        write: data[permissionId].write === 'on',
+                        delete: data[permissionId].delete === 'on',
+                    }
+                }
+            })
+        }
+        res.redirect(`/hrms/users?updateSuccessful=true&name=''`);
     }
     catch(err){
         console.log(err);
-        const error = err.details ? err.details[0]._message : err._message;
-        res.redirect(`/users?error=${error}`);
+        const error = err.details ? err.details[0].message : err._message;
+        res.redirect(`/hrms/users?error=${error}`);
+
+    }
+})
+
+router.post("/users/add", isAuthenticated, async (req, res) => {
+    const data = req.body;
+    console.log(data);
+    try{
+        if(!req.user.role.permissions.user.write) throw {details: [{message: "Unauthorized"}]};
+        const isValid = await userSchema.validateAsync(data);
+        if (isValid.error) return res.redirect(`/hrms/users?error=${isValid.error.message}`);
+
+        const newUser = await User.create(data);
+        res.redirect(`/hrms/users?addSuccessful=true&name=${newUser.username}`);
+    }
+    catch(err){
+        console.log(err);
+        const error = err.details ? err.details[0].message : err._message;
+        res.redirect(`/hrms/users?error=${error}`);
     }
 })
 
 router.delete("/users/:id", isAuthenticated, async (req, res) => {
     const id = req.params.id;
     try{
-        await User.deleteOne({_id: id});
+        if(!req.user.role.permissions.user.delete) throw {details: [{message: "Unauthorized"}]};
+        if(req.user._id !== id)
+            await User.deleteOne({_id: id});
+        else
+            throw "Can't delete your own account"
         res.json({message: "success"})
     }
     catch(err){
         console.log(err);
-        res.json({error: err.details[0].message});
+        const error = err.details ? err.details[0].message : err._message;
+        res.json({error});
     }
 })
 
@@ -83,6 +130,7 @@ router.post("/users/update/", isAuthenticated, async (req, res) => {
     const data = {username, password, email, phone, role};
     const id = req.body.id;
     try{
+        if(!req.user.role.permissions.user.write) throw {details: [{message: "Unauthorized"}]};
         const isValid = await userSchema.validateAsync(data);
         if (isValid.error) return res.redirect(`/users?error=${isValid.error.message}`);
         await User.updateOne({_id: id}, data);

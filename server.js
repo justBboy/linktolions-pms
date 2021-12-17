@@ -8,6 +8,7 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const {setDefaults} = require("./utils");
 
 require("dotenv").config();
 require("./config");
@@ -48,6 +49,9 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => {
     console.log(err)
 })
+
+//set defaults
+setDefaults();
 
 //routes
 routes(app, io);

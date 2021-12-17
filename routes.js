@@ -1,5 +1,6 @@
 const {router: messengerRouter, initializeSocket} = require("./routes/messenger");
 const {isAuthenticated} = require("./utils");
+const Permissions = require("./models/Permissions");
 module.exports = function(app, io){
     app.get("/", isAuthenticated, (req, res) => {
         res.redirect("/analytics");

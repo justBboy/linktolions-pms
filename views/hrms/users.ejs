@@ -25,6 +25,7 @@
                         <ul class="nav nav-tabs">
                             <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#Users">Users</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#addUser">Add User</a></li>        
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#role-permissions">Role Permissions</a></li>        
                         </ul>
                         <div class="tab-content mt-0">
                             <div class="tab-pane show active" id="Users">
@@ -42,7 +43,7 @@
                                         </thead>
                                         <tbody>
                                             <% for (const user of users) { %>
-                                                <tr>
+                                                <tr id="<%= user._id %>">
                                                     <td class="width45">
                                                         <div class="avtar-pic w35 bg-pink" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span><%= user.username.substring(0, 2) %></span></div>
                                                     </td>
@@ -50,11 +51,16 @@
                                                         <h6 class="mb-0"><%= user.username %></h6>
                                                         <span><%= user.email %></span>
                                                     </td>
-                                                    <td><span class="badge badge-<%= user.role === roles.EMPLOYEE ? "default" : user.role === roles.ADMIN ? "info" : "danger" %>"><%= user.role === roles.EMPLOYEE ? "Employee" : user.role === roles.ADMIN ? "Admin" : "Super Admin" %></span></td>
+                                                    <td><span class="badge badge-<%= user.role.role === roles.EMPLOYEE ? "default" : user.role.role === roles.ADMIN ? "info" : "danger" %>"><%= user.role.title %></span></td>
                                                     <td><% user.created_at && user.created_at.toDateString() %></td>
                                                     <td>CEO and Founder</td>
                                                     <td>
-                                                        
+                                                        <% if(userPermissions.write) { %>
+                                                            <button type="button" data-username="<%= user.username %>" data-role="<%= user.role.role %>" data-phone="<%= user.phone %>" data-email="<%= user.email %>" class="btn btn-sm btn-default edit-user-btn" data-id="<%= user._id %>" title="Edit"><i class="fa fa-edit"></i></button>
+                                                        <<% } %>
+                                                        <% if (user._id.toString() != req.user._id.toString()) { %>
+                                                            <button type="button" class="btn btn-sm btn-default del-user-btn js-sweetalert" data-username="<%= user.username %>" data-id="<%= user._id %>" title="Delete"><i class="fa fa-trash-o text-danger"></i></button>
+                                                        <% } %>
                                                     </td>
                                                 </tr>
                                             <% } %>
@@ -64,63 +70,54 @@
                             </div>
                             <div class="tab-pane" id="addUser">
                                 <div class="body mt-2">
-                                    <div class="row clearfix">
+                                    <form action="/hrms/users/add" method="post" class="row clearfix">
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="First Name *">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Last Name">
+                                                <input type="text" minlength="6" name="username" class="form-control" placeholder="Username *">
                                             </div>
                                         </div>
             
                                         <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Email ID *">
+                                            <div class="form-group"> <input type="email" name="email" class="form-control" placeholder="Email ID *">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Password">
+                                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Confirm Password">
+                                                <input type="password" class="form-control" placeholder="Confirm Password">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Mobile No">
-                                            </div>
-                                        </div>                            
-            
-                                        <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Employee ID *">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <div class="form-group">                                   
-                                                <input type="text" class="form-control" placeholder="Username *">
+                                                <input type="text" name="phone" class="form-control" placeholder="Mobile No">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <select class="form-control show-tick">
+                                                <select name="role" class="form-control show-tick">
                                                     <option>Select Role Type</option>
-                                                    <option>Super Admin</option>
-                                                    <option>Admin</option>
-                                                    <option>Employee</option>
+                                                    <% for (const role of Object.keys(roles)) { %>
+                                                        <option value="<%= roles[role] %>"><%= role %></option>
+                                                    <% } %>
                                                 </select>
                                             </div>
                                         </div>
-            
+                                        <div class="col-lg-12 col-md-12">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="role-permissions">
+                                <div class="body mt-2">
+                                    <div class="clearfix row">
                                         <div class="col-12">
                                             <h6>Module Permission</h6>
-                                            <div class="table-responsive">
+                                            <form action="/hrms/updateUserPermissions" method="post" class="table-responsive">
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
@@ -131,95 +128,32 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Super Admin</td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Admin</td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee</td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>HR Admin</td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox" checked>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <label class="fancy-checkbox">
-                                                                    <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                        </tr>
+                                                        <% for (const role of userRoles) { %>
+                                                            <tr>
+                                                                <td><%= role.title %></td>
+                                                                <td>
+                                                                    <label class="fancy-checkbox"> <input class="checkbox-tick" type="checkbox" name="<%= `${role.permissions._id}[read]` %>" <%= role.permissions.permissions.user.read ? 'checked' : '' %> >
+                                                                        <span></span>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <label class="fancy-checkbox">
+                                                                        <input class="checkbox-tick" type="checkbox" name="<%= `${role.permissions._id}[write]` %>" <%= role.permissions.permissions.user.write ? 'checked' : '' %> >
+                                                                        <span></span>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <label class="fancy-checkbox">
+                                                                        <input class="checkbox-tick" type="checkbox" name="<%= `${role.permissions._id}[delete]` %>" <%= role.permissions.permissions.user.delete ? 'checked' : '' %> >
+                                                                        <span></span>
+                                                                    </label>
+                                                                </td>
+                                                            </tr>
+                                                        <% } %>
                                                     </tbody>
                                                 </table>
-                                            </div>
-                                            <button type="button" class="btn btn-primary">Add</button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+                                                <button type="submit" class="btn btn-secondary">Update</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -233,10 +167,103 @@
     
 </div>
 
+<div class="modal fade" id="updateusermodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Update Contact</h4>
+            </div>
+            <form class="modal-body" id="update-user-form" action="/hrms/user/update" method="POST">
+                <input type="hidden" name="id" id="update-user-id" />
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" name="username" id="update-user-username" required class="form-control round" placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="email" name="email" id="update-user-email" required class="form-control round" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="tel" name="phone" id="update-user-phone" required class="form-control round" placeholder="Phone">
+                    </div>
+                </div>       
+                <div class="form-group">
+                    <div class="form-line">
+                        <select name="role" id="update-user-role" class="form-control show-tick">
+                            <option>Select Role Type</option>
+                            <% for (const role of Object.keys(roles)) { %>
+                                <option value="<%= roles[role] %>"><%= role %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-round btn-primary">Update</button>
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="/static/assets/bundles/libscripts.bundle.js"></script>
 <script src="/static/assets/bundles/vendorscripts.bundle.js"></script>
 
 <script src="/static/assets/vendor/sweetalert/sweetalert.min.js"></script>
 
 <script src="/static/assets/bundles/mainscripts.bundle.js"></script>
-<script src="/static/assets/js/pages/ui/dialogs.js"></script>
+
+<script src="/static/assets/vendor/socketio/socket.io.min.js"></script>
+<script src="/static/assets/vendor/toastr/toastr.js"></script>
+<script src="/static/assets/js/common2.js"></script>
+<script src="/static/assets/js/socketFunctions.js"></script>
+
+<script>
+function showConfirmMessage(username, id) {
+    swal({
+        title: "Are you sure?",
+        text: `${username.toUpperCase()} will be permanently deleted from database`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        confirmButtonText: "Yes, delete user!",
+        closeOnConfirm: false
+    }, async function () {
+        console.log(id);
+        const res = await fetch(`/hrms/users/${id}`, {
+            method: "delete"
+        });
+        const data = await res.json();
+        if (data.error)
+            swal("Delete Failed", `${username} couldn't be deleted`, 'error');
+        else
+            swal("Deleted!", `${username} successfully deleted`, "success");
+    });
+}
+
+$(".del-user-btn").click(function(){
+    const username = $(this).data("username");
+    const id = $(this).data("id");
+    showConfirmMessage(username, id)
+    $(`#${id}`).remove();
+})
+
+$(".edit-user-btn").click(function(){
+    const id = $(this).data("id");
+    const username = $(this).data("username");
+    const email = $(this).data("email");
+    const role = $(this).data("role");
+    const phone = $(this).data("phone");
+
+    $("#update-user-username").val(username);
+    $("#update-user-email").val(email);
+    $("#update-user-role").val(role);
+    $("#update-user-phone").val(phone);
+    $("#update-user-id").val(id);
+
+    $("#updateusermodal").modal("toggle");
+})
+</script>

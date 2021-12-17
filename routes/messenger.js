@@ -95,7 +95,6 @@ function initializeSocket(io) {
   io.on("connection", async (socket) => {
     console.log("connecting");
     let users = await User.find({}).select("-password");
-
     users = users
       .filter((u) => u._id != socket.userid)
       .map((user) => ({

@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		toastr.options.timeOut = 4998;
 		toastr.options.closeButton = true;
 		toastr.options.positionClass = 'toast-bottom-right';
-		toastr['success'](`Contact of ${name} Successfully ${deleteSuccessful ? 'Deleted' : updateSuccessful ? 'Updated' : sentSuccessful ? 'Sent' : 'Added'}`);
+		toastr['success'](`${name} Successfully ${deleteSuccessful ? 'Deleted' : updateSuccessful ? 'Updated' : sentSuccessful ? 'Sent' : 'Added'}`);
 	}
     else if (error){
         toastErr(error);

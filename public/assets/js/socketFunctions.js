@@ -568,7 +568,6 @@ if(chatSubmitBtn && chatMessageInput)
         chatMessageInput.value = "";
     })
 
-console.log(tabChatMessageInput, tabChatSubmitBtn)
 
 if(tabChatMessageInput && tabChatSubmitBtn)
     tabChatSubmitBtn.addEventListener("click", () => {
